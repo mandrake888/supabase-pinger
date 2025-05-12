@@ -10,7 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Print current time
-        run: echo "Current UTC time: $(date -u)"
+        run: |
+          echo "Current UTC time: $(date -u)"
 
       - name: Ping Supabase
         run: |
@@ -25,5 +26,7 @@ jobs:
           else
             echo "✅ Supabase responded successfully."
           fi
+
+
 
 
