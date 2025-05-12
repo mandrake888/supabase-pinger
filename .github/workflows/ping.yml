@@ -2,16 +2,28 @@ name: Keep Supabase Awake
 
 on:
   schedule:
-    - cron: '*/15 * * * *'  # every 15 minutes
+    - cron: '0 */18 * * *'  # every 18 hours
   workflow_dispatch:
 
 jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
+      - name: Print current time
+        run: echo "Current UTC time: $(date -u)"
+
       - name: Ping Supabase
         run: |
           echo "Pinging Supabase..."
-          curl -s -o /dev/null -w "%{http_code}" \
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
             -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
-            "https://bcnnqbmduewqeiexeese.supabase.co/rest/v1/"
+            "https://bcnnqbmduewqeiexeese.supabase.co/rest/v1/")
+          echo "HTTP Status: $STATUS"
+
+          if [ "$STATUS" -ne 200 ]; then
+            echo "❌ Supabase ping failed with status $STATUS"
+            exit 1
+          else
+            echo "✅ Supabase responded successfully."
+          fi
+
