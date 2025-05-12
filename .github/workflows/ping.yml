@@ -19,11 +19,11 @@ jobs:
             -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
             "https://bcnnqbmduewqeiexeese.supabase.co/rest/v1/")
           echo "HTTP Status: $STATUS"
-
           if [ "$STATUS" -ne 200 ]; then
             echo "❌ Supabase ping failed with status $STATUS"
             exit 1
           else
             echo "✅ Supabase responded successfully."
           fi
+
 
